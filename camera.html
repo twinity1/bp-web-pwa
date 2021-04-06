@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <video autoplay="autoplay" id="camera">
+
+    </video>
+
+    <canvas id="canv"></canvas>
+
+    <img id="image">
+
+    <button id="front">Front</button>
+    <button id="capture">Capture</button>
+    <button id="back">Back</button>
+
+    <script>
+        const camera = document.getElementById('camera');
+        const canv = document.getElementById('canv');
+        const image = document.getElementById('canv');
+
+        async function init() {
+            camera.setAttribute('autoplay', '');
+            camera.setAttribute('muted', '');
+            camera.setAttribute('playsinline', '');
+
+            function switchCamera(facing) {
+                if (navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: facing } } })
+                        .then(function (stream) {
+                            camera.srcObject = stream;
+                            console.log("stream")
+                        })
+                        .catch(function (err0r) {
+                            console.log("Something went wrong!");
+                        });
+                }
+            }
+
+            document.getElementById("front").addEventListener("click", function () {
+               switchCamera("user");
+            });
+
+            document.getElementById("back").addEventListener("click", function () {
+                switchCamera("environment");
+            });
+
+            document.getElementById("capture").addEventListener("click", function () {
+                canv.width = camera.videoWidth;
+                canv.height = camera.videoHeight;
+                canv.getContext('2d').drawImage(camera, 0, 0, camera.videoWidth, camera.videoHeight);
+
+                console.log("capture");
+
+                canv.toBlob(function (blob) {
+                    image.setAttribute("src", URL.createObjectURL(blob));
+                });
+            });
+
+            switchCamera("user");
+        }
+
+        init();
+
+
+
+    </script>
+</body>
+</html>

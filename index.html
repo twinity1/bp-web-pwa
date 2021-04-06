@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="manifest" href="pwa/manifest.webmanifest">
+</head>
+<body>
+    <a href="camera.html">Camera</a>
+    <a href="location.html">Location</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="biometrics.html">Biometrics</a>
+    <a href="performance.html">Performance</a>
+
+<script>
+    try {
+        navigator.serviceWorker.register('sw.js').then(function(registration) {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent Chrome 67 and earlier from automatically showing the prompt
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = e;
+                // Update UI to notify the user they can add to home screen
+                addBtn.style.display = 'block';
+
+                deferredPrompt.prompt();
+            });
+        });
+    } catch (e) {
+        alert(e);
+    }
+
+
+</script>
+</body>
+</html>

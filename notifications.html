@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    Notification.requestPermission();
+
+    try {
+        navigator.serviceWorker.register('sw.js').then(function(registration) {
+                registration.showNotification('Vibration Sample', {
+                    body: 'Buzz! Buzz!',
+                    vibrate: [200, 100, 200, 100, 200, 100, 200],
+                    tag: 'vibration-sample'
+                });
+            });
+    } catch (e) {
+        alert(e);
+    }
+
+</script>
+</body>
+</html>
